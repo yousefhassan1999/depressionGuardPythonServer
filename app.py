@@ -1,13 +1,21 @@
+import os
 from flask import Flask
-from flask_restful import reqparse, abort, Api, Resource
-import pickle
+from flask_restful import reqparse, Api, Resource
 import snscrape.modules.twitter as sntwitter
+import requests
+import pickle
 
-filename = 'Resources/pipeline.pkl'
+url = "https://github.com/yousefhassan1999/depressionGuardPythonServer/releases/download/modelFile/pipeline.pkl"
+filename = 'pipeline.pkl'
+
+if not (os.path.isfile(filename)):
+    print("Downloading...")
+    r = requests.get(url, allow_redirects=True)
+    open(filename, 'wb').write(r.content)
 
 with open(filename, 'rb') as f:
-  pipeline = pickle.load(f)
-  
+    pipeline = pickle.load(f)
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -40,7 +48,7 @@ class GetUserTwittes(Resource):
         return tweets
     
     
-    
+ 
 api.add_resource(ModelPrediction, '/predict')
 api.add_resource(GetUserTwittes, '/GetUserTwittes')
 
