@@ -15,7 +15,6 @@ if not (os.path.isfile(filename)):
 
 with open(filename, 'rb') as f:
     pipeline = pickle.load(f)
-
 app = Flask(__name__)
 api = Api(app)
 
@@ -53,4 +52,4 @@ api.add_resource(ModelPrediction, '/predict')
 api.add_resource(GetUserTwittes, '/GetUserTwittes')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
